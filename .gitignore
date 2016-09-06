@@ -7,3 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+ext/trusted/target
+ext/trusted/Cargo.lock
