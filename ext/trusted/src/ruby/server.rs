@@ -1,5 +1,6 @@
-use ruru::{Class, NilClass, RString, VM};
-use ruru::traits::Object;
+use std::error::Error;
+
+use ruru::{Class, NilClass, RString, Object, VM};
 
 use server::Server as RustServer;
 
@@ -10,14 +11,20 @@ methods!(
     itself,
 
     fn initialize(addr: RString) -> Server {
-        itself.instance_variable_set("@addr", addr);
+        if let Err(ref error) = addr {
+            VM::raise(error.to_exception(), error.description());
+        }
+
+        itself.instance_variable_set("@addr", addr.unwrap());
 
         itself
     }
 
     fn listen() -> NilClass {
         let handler = VM::block_proc();
-        let addr = itself.instance_variable_get("@addr").to::<RString>().to_string();
+
+        // We can use unsafe here, because the type of addr is checked in the constructor
+        let addr = unsafe { itself.instance_variable_get("@addr").to::<RString>().to_string() };
 
         RustServer::new(addr).listen(handler);
 
@@ -27,7 +34,7 @@ methods!(
 
 impl Server {
     pub fn define_ruby_class() {
-        Class::new("RubyHttpServer").define(|itself| {
+        Class::new("RubyHttpServer", None).define(|itself| {
             itself.def("initialize", initialize);
             itself.def("listen", listen);
         });

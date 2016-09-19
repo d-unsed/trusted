@@ -1,5 +1,4 @@
-use ruru::Proc;
-use ruru::traits::Object;
+use ruru::{Object, Proc};
 
 use request::Request;
 use response::Response;

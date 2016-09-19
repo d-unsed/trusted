@@ -1,7 +1,6 @@
 use std::convert::From;
 
-use ruru::{Class, Hash, RString};
-use ruru::traits::Object;
+use ruru::{Class, Hash, Object, RString};
 
 use request::Request as RustRequest;
 
@@ -20,7 +19,7 @@ impl From<RustRequest> for Request {
             headers.store(RString::new(&field), RString::new(&value));
         }
 
-        Class::from_existing("Request").new_instance(
+        let request = Class::from_existing("Request").new_instance(
             vec![
                 RString::new(&request.method).to_any_object(),
                 RString::new(&request.url).to_any_object(),
@@ -31,6 +30,9 @@ impl From<RustRequest> for Request {
                 headers.to_any_object(),
                 RString::new(&request.body).to_any_object(),
             ]
-        ).to::<Self>()
+        );
+
+        // We can use unsafe here, because request is created by our own code
+        unsafe { request.to::<Self>() }
     }
 }

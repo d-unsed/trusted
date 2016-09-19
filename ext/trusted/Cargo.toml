@@ -8,4 +8,4 @@ crate-type = ["dylib"]
 
 [dependencies]
 hyper = "0.9.10"
-ruru = { path = "../../../rust/ruru" }
+ruru = { path = "../../../../rust/ruru" }
