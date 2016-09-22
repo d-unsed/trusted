@@ -10,3 +10,7 @@
 
 ext/trusted/target
 ext/trusted/Cargo.lock
+
+lib/*.bundle
+lib/*.dylib
+lib/*.so
