@@ -1,5 +1,6 @@
 require 'trusted/version'
 
+require 'rack/handler/trusted'
 require 'fiddle'
 
 library_path = File.expand_path(
