@@ -19,7 +19,7 @@ impl From<RustRequest> for Request {
             headers.store(RString::new(&field), RString::new(&value));
         }
 
-        let request = Class::from_existing("Request").new_instance(
+        let request = Class::from_existing("Trusted").get_nested_class("Request").new_instance(
             vec![
                 RString::new(&request.method).to_any_object(),
                 RString::new(&request.url).to_any_object(),

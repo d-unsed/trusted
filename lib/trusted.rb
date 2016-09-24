@@ -1,3 +1,4 @@
+require 'trusted/request'
 require 'trusted/version'
 
 require 'rack/handler/trusted'
