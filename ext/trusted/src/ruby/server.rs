@@ -34,9 +34,11 @@ methods!(
 
 impl Server {
     pub fn define_ruby_class() {
-        Class::new("RubyHttpServer", None).define(|itself| {
-            itself.def("initialize", initialize);
-            itself.def("listen", listen);
+        Class::from_existing("Trusted").define(|itself| {
+            itself.define_nested_class("Server", None).define(|itself| {
+                itself.def("initialize", initialize);
+                itself.def("listen", listen);
+            });
         });
     }
 }
