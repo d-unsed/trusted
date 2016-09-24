@@ -53,7 +53,7 @@ module Rack
 
     register :trusted, 'Rack::Handler::Trusted'
 
-    def self.default
+    def self.default(options = {})
       Rack::Handler::Trusted
     end
   end
