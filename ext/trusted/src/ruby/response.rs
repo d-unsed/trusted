@@ -6,7 +6,9 @@ class!(Response);
 
 impl Response {
     pub fn new() -> Self {
-        let response = Class::from_existing("Response").new_instance(vec![]);
+        let response = Class::from_existing("Trusted")
+            .get_nested_class("Response")
+            .new_instance(vec![]);
 
         // We can use unsafe here, because response is created by our own code
         unsafe { response.to::<Self>() }

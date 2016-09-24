@@ -1,8 +1,10 @@
+require 'fiddle'
+
 require 'trusted/request'
+require 'trusted/response'
 require 'trusted/version'
 
 require 'rack/handler/trusted'
-require 'fiddle'
 
 library_path = File.expand_path(
   File.join(File.dirname(__FILE__), 'libtrusted.dylib')
@@ -13,5 +15,4 @@ function = Fiddle::Function.new(library['initialize_my_app'], [], Fiddle::TYPE_V
 function.call
 
 module Trusted
-  # Your code goes here...
 end
