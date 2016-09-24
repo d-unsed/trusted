@@ -4,6 +4,12 @@ use ruru::{Class, Hash, Object, RString};
 
 use request::Request as RustRequest;
 
+lazy_static! {
+    static ref REQUEST_CLASS: Class = {
+        Class::from_existing("Trusted").get_nested_class("Request")
+    };
+}
+
 class!(Request);
 
 impl From<RustRequest> for Request {
@@ -19,7 +25,7 @@ impl From<RustRequest> for Request {
             headers.store(RString::new(&field), RString::new(&value));
         }
 
-        let request = Class::from_existing("Trusted").get_nested_class("Request").new_instance(
+        let request = (*REQUEST_CLASS).new_instance(
             vec![
                 RString::new(&request.method).to_any_object(),
                 RString::new(&request.url).to_any_object(),

@@ -1,14 +1,17 @@
+use hyper::header::Headers;
 use ruru::{Class, Fixnum, Hash, Object, RString};
 
-use hyper::header::Headers;
+lazy_static! {
+    static ref RESPONSE_CLASS: Class = {
+        Class::from_existing("Trusted").get_nested_class("Response")
+    };
+}
 
 class!(Response);
 
 impl Response {
     pub fn new() -> Self {
-        let response = Class::from_existing("Trusted")
-            .get_nested_class("Response")
-            .new_instance(vec![]);
+        let response = (*RESPONSE_CLASS).new_instance(vec![]);
 
         // We can use unsafe here, because response is created by our own code
         unsafe { response.to::<Self>() }
