@@ -9,4 +9,4 @@ crate-type = ["dylib"]
 [dependencies]
 hyper = "0.9.10"
 lazy_static = "0.2.1"
-ruru = { path = "/Users/dmitry/sites/rust/ruru" }
+ruru = "0.8.1"
