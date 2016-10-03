@@ -2,6 +2,7 @@
 #[macro_use] extern crate ruru;
 
 extern crate hyper;
+extern crate hyperlocal;
 
 mod handler;
 mod request;

@@ -2,6 +2,7 @@ use std::sync::mpsc;
 use std::thread;
 
 use hyper::server::Server as HyperServer;
+use hyperlocal::UnixSocketServer;
 use ruru::{Proc, VM};
 
 use handler::Handler;
@@ -9,6 +10,11 @@ use request_processor::RequestProcessor;
 
 pub struct Server {
     addr: String,
+}
+
+enum ServerType {
+    Unix,
+    Tcp,
 }
 
 impl Server {
@@ -24,9 +30,20 @@ impl Server {
 
         let handler = Handler::new(request_sender, response_receiver);
 
+        let server_type = ServerType::Unix;
+
         thread::spawn(move || {
             let handler_function = || -> () {
-                HyperServer::http(self.addr.as_str()).unwrap().handle(handler).unwrap();
+                match server_type {
+                    ServerType::Unix => {
+                        UnixSocketServer::new("/tmp/trusted.sock").unwrap()
+                            .handle(handler).unwrap();
+                    },
+                    ServerType::Tcp => {
+                        HyperServer::http(self.addr.as_str()).unwrap()
+                            .handle(handler).unwrap();
+                    }
+                };
             };
 
             let unblock_function = || {
