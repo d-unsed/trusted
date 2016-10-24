@@ -11,9 +11,10 @@ mod response;
 mod ruby;
 mod server;
 
-use ruby::Server;
+use ruby::{Request, Server};
 
 #[no_mangle]
 pub extern fn initialize_my_app() {
+    Request::define_ruby_class();
     Server::define_ruby_class();
 }

@@ -1,6 +1,5 @@
 require 'fiddle'
 
-require 'trusted/request'
 require 'trusted/response'
 require 'trusted/version'
 

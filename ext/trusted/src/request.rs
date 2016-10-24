@@ -5,15 +5,80 @@ use hyper::header::Headers;
 use hyper::server::{Request as HyperRequest};
 
 pub struct Request {
-    pub method: String,
-    pub url: String,
-    pub path_info: String,
-    pub query_string: String,
-    pub remote_addr: String,
-    pub server_port: String,
-    pub headers: Headers,
-    pub body: String,
+    method: String,
+    url: String,
+    path_info: String,
+    query_string: String,
+    remote_addr: String,
+    server_port: String,
+    headers: Headers,
+    body: String,
 }
+
+impl Request {
+    pub fn new(method: String,
+               url: String,
+               path_info: String,
+               query_string: String,
+               remote_addr: String,
+               server_port: String,
+               headers: Headers,
+               body: String)
+               -> Self {
+        Request {
+            method: method,
+            url: url,
+            path_info: path_info,
+            query_string: query_string,
+            remote_addr: remote_addr,
+            server_port: server_port,
+            headers: headers,
+            body: body,
+        }
+    }
+
+    #[inline]
+    pub fn method(&self) -> &str {
+        &self.method
+    }
+
+    #[inline]
+    pub fn url(&self) -> &str {
+        &self.url
+    }
+
+    #[inline]
+    pub fn path_info(&self) -> &str {
+        &self.path_info
+    }
+
+    #[inline]
+    pub fn query_string(&self) -> &str {
+        &self.query_string
+    }
+
+    #[inline]
+    pub fn remote_addr(&self) -> &str {
+        &self.remote_addr
+    }
+
+    #[inline]
+    pub fn server_port(&self) -> &str {
+        &self.server_port
+    }
+
+    #[inline]
+    pub fn headers(&self) -> &Headers {
+        &self.headers
+    }
+
+    #[inline]
+    pub fn body(&self) -> &str {
+        &self.body
+    }
+}
+
+wrappable_struct!(Request, RequestWrapper, REQUEST_DATA_TYPE);
 
 impl<'a, 'b> From<HyperRequest<'a, 'b>> for Request {
     fn from(mut request: HyperRequest) -> Self {
@@ -32,15 +97,13 @@ impl<'a, 'b> From<HyperRequest<'a, 'b>> for Request {
         let remote_addr = request.remote_addr.ip().to_string();
         let server_port = request.remote_addr.port().to_string();
 
-        Request {
-            method: method,
-            url: url,
-            path_info: path_info,
-            query_string: query_string,
-            remote_addr: remote_addr,
-            server_port: server_port,
-            headers: request.headers,
-            body: body,
-        }
+        Request::new(method,
+                     url,
+                     path_info,
+                     query_string,
+                     remote_addr,
+                     server_port,
+                     request.headers,
+                     body)
     }
 }

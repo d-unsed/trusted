@@ -2,7 +2,7 @@ use std::convert::From;
 
 use ruru::{Class, Hash, Object, RString};
 
-use request::Request as RustRequest;
+use request::{REQUEST_DATA_TYPE, Request as RustRequest};
 
 lazy_static! {
     static ref REQUEST_CLASS: Class = {
@@ -12,11 +12,38 @@ lazy_static! {
 
 class!(Request);
 
-impl From<RustRequest> for Request {
-    fn from(request: RustRequest) -> Self {
+methods!(
+    Request,
+    itself,
+
+    fn method() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).method())
+    }
+
+    fn uri() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).url())
+    }
+
+    fn path_info() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).path_info())
+    }
+
+    fn query_string() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).query_string())
+    }
+
+    fn remote_addr() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).remote_addr())
+    }
+
+    fn server_port() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).server_port())
+    }
+
+    fn headers() -> Hash {
         let mut headers = Hash::new();
 
-        for header in request.headers.iter() {
+        for header in itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).headers().iter() {
             let field = header.name().to_string().replace("-", "_").to_uppercase();
             let value = header.value_string();
 
@@ -25,20 +52,31 @@ impl From<RustRequest> for Request {
             headers.store(RString::new(&field), RString::new(&value));
         }
 
-        let request = (*REQUEST_CLASS).new_instance(
-            vec![
-                RString::new(&request.method).to_any_object(),
-                RString::new(&request.url).to_any_object(),
-                RString::new(&request.path_info).to_any_object(),
-                RString::new(&request.query_string).to_any_object(),
-                RString::new(&request.remote_addr).to_any_object(),
-                RString::new(&request.server_port).to_any_object(),
-                headers.to_any_object(),
-                RString::new(&request.body).to_any_object(),
-            ]
-        );
+        headers
+    }
 
-        // We can use unsafe here, because request is created by our own code
-        unsafe { request.to::<Self>() }
+    fn body() -> RString {
+        RString::new(itself.get_data::<RustRequest>(&*REQUEST_DATA_TYPE).body())
+    }
+);
+
+impl Request {
+    pub fn define_ruby_class() {
+        Class::from_existing("Trusted").define_nested_class("Request", None).define(|itself| {
+            itself.def("method", method);
+            itself.def("uri", uri);
+            itself.def("path_info", path_info);
+            itself.def("query_string", query_string);
+            itself.def("remote_addr", remote_addr);
+            itself.def("server_port", server_port);
+            itself.def("headers", headers);
+            itself.def("body", body);
+        });
+    }
+}
+
+impl From<RustRequest> for Request {
+    fn from(request: RustRequest) -> Self {
+        (*REQUEST_CLASS).wrap_data(request, &*REQUEST_DATA_TYPE)
     }
 }
