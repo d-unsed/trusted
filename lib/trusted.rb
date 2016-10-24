@@ -1,17 +1,17 @@
-require 'fiddle'
+require 'thermite/fiddle'
 
 require 'trusted/response'
 require 'trusted/version'
 
 require 'rack/handler/trusted'
 
-library_path = File.expand_path(
-  File.join(File.dirname(__FILE__), 'libtrusted.dylib')
-)
+toplevel_dir = File.dirname(File.dirname(__FILE__))
 
-library = Fiddle::dlopen(library_path)
-function = Fiddle::Function.new(library['initialize_my_app'], [], Fiddle::TYPE_VOIDP)
-function.call
+Thermite::Fiddle.load_module(
+  'initialize_my_app',
+  ruby_project_path: toplevel_dir,
+  cargo_project_path: File.join(toplevel_dir, 'ext', 'trusted')
+)
 
 module Trusted
 end
