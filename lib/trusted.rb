@@ -1,3 +1,4 @@
+require 'docile'
 require 'thermite/fiddle'
 
 require 'trusted/config/builder'

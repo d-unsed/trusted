@@ -8,6 +8,10 @@ module Trusted
         listen_on: 'localhost:3000',
       }.freeze
 
+      def self.dsl(&block)
+        Docile.dsl_eval(new, &block).build
+      end
+
       def initialize
         @config = {}
       end

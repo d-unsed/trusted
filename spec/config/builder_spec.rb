@@ -7,6 +7,29 @@ describe Trusted::Config::Builder do
 
   subject(:builder) { described_class.new }
 
+  describe '.dsl' do
+    let(:dsl_block) { -> {} }
+
+    subject { described_class.dsl(&dsl_block) }
+
+    it 'uses docile for handling DSL' do
+      builder = instance_double(described_class)
+
+      allow(described_class).to receive(:new).and_return(builder)
+
+      allow(Docile).to receive(:dsl_eval) do |arg_builder, &block|
+        expect(arg_builder).to eq(builder)
+        expect(block).to eq(dsl_block)
+
+        builder
+      end
+
+      expect(builder).to receive(:build)
+
+      subject
+    end
+  end
+
   describe '#binding_type' do
     subject { builder.binding_type(binding_type) }
 
