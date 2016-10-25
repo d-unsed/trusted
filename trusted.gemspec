@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'docile', '~> 1.1.0'
   spec.add_dependency 'rack', '>= 1.0', '< 3.0'
   spec.add_dependency 'thermite', '~> 0.7.0'
 
