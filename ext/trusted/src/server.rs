@@ -30,11 +30,11 @@ impl Server {
             let handler_function = || -> () {
                 match *self.config.binding_type() {
                     BindingType::Unix => {
-                        UnixSocketServer::new("/tmp/trusted.sock").unwrap()
+                        UnixSocketServer::new(self.config.listen_on()).unwrap()
                             .handle(handler).unwrap();
                     },
                     BindingType::Tcp => {
-                        HyperServer::http("localhost:3000").unwrap()
+                        HyperServer::http(self.config.listen_on()).unwrap()
                             .handle(handler).unwrap();
                     }
                 };
