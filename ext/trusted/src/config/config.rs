@@ -16,6 +16,16 @@ impl Config {
             listen_on: listen_on,
         }
     }
+
+    #[inline]
+    fn binding_type(&self) -> &BindingType {
+        &self.binding_type
+    }
+
+    #[inline]
+    fn listen_on(&self) -> &str {
+        &self.listen_on
+    }
 }
 
 
