@@ -5,21 +5,17 @@ use hyper::server::Server as HyperServer;
 use hyperlocal::UnixSocketServer;
 use ruru::{Proc, VM};
 
+use config::{BindingType, Config};
 use handler::Handler;
 use request_processor::RequestProcessor;
 
 pub struct Server {
-    addr: String,
-}
-
-enum ServerType {
-    Unix,
-    Tcp,
+    config: Config,
 }
 
 impl Server {
-    pub fn new(addr: String) -> Self {
-        Server { addr: addr }
+    pub fn new(config: Config) -> Self {
+        Server { config: config }
     }
 
     pub fn listen(self, ruby_handler: Proc) {
@@ -30,17 +26,15 @@ impl Server {
 
         let handler = Handler::new(request_sender, response_receiver);
 
-        let server_type = ServerType::Unix;
-
         thread::spawn(move || {
             let handler_function = || -> () {
-                match server_type {
-                    ServerType::Unix => {
+                match *self.config.binding_type() {
+                    BindingType::Unix => {
                         UnixSocketServer::new("/tmp/trusted.sock").unwrap()
                             .handle(handler).unwrap();
                     },
-                    ServerType::Tcp => {
-                        HyperServer::http(self.addr.as_str()).unwrap()
+                    BindingType::Tcp => {
+                        HyperServer::http("localhost:3000").unwrap()
                             .handle(handler).unwrap();
                     }
                 };

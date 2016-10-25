@@ -2,6 +2,8 @@ use std::error::Error;
 
 use ruru::{Class, NilClass, RString, Object, VM};
 
+use config::Config as RustConfig;
+use ruby::Config;
 use server::Server as RustServer;
 
 class!(Server);
@@ -10,12 +12,12 @@ methods!(
     Server,
     itself,
 
-    fn initialize(addr: RString) -> Server {
-        if let Err(ref error) = addr {
+    fn initialize(config: Config) -> Server {
+        if let Err(ref error) = config {
             VM::raise(error.to_exception(), error.description());
         }
 
-        itself.instance_variable_set("@addr", addr.unwrap());
+        itself.instance_variable_set("@config", config.unwrap());
 
         itself
     }
@@ -24,9 +26,9 @@ methods!(
         let handler = VM::block_proc();
 
         // We can use unsafe here, because the type of addr is checked in the constructor
-        let addr = unsafe { itself.instance_variable_get("@addr").to::<RString>().to_string() };
+        let config = unsafe { itself.instance_variable_get("@config").to::<Config>() };
 
-        RustServer::new(addr).listen(handler);
+        RustServer::new(RustConfig::from(config)).listen(handler);
 
         NilClass::new()
     }
