@@ -10,7 +10,7 @@ pub struct Config {
 }
 
 impl Config {
-    fn new(binding_type: BindingType, listen_on: String) -> Self {
+    pub fn new(binding_type: BindingType, listen_on: String) -> Self {
         Config {
             binding_type: binding_type,
             listen_on: listen_on,
@@ -18,12 +18,12 @@ impl Config {
     }
 
     #[inline]
-    fn binding_type(&self) -> &BindingType {
+    pub fn binding_type(&self) -> &BindingType {
         &self.binding_type
     }
 
     #[inline]
-    fn listen_on(&self) -> &str {
+    pub fn listen_on(&self) -> &str {
         &self.listen_on
     }
 }
