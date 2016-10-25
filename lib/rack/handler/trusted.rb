@@ -6,7 +6,9 @@ module Rack
   module Handler
     class Trusted
       def self.run(app, options = {})
-        ::Trusted::Server.new("0.0.0.0:3000").listen do |request, response|
+        config = options[:trusted_config] || ::Trusted::Config::Builder.new.build
+
+        ::Trusted::Server.new(config).listen do |request, response|
           puts "REQUEST: [#{request.method}] #{request.uri}"
           puts "PATH_INFO: #{request.path_info}"
           puts "QUERY_STRING: #{request.query_string}"
