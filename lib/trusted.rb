@@ -1,6 +1,7 @@
 require 'thermite/fiddle'
 
 require 'trusted/config/builder'
+require 'trusted/config/config'
 
 require 'trusted/response'
 require 'trusted/version'

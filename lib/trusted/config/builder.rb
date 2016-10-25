@@ -21,7 +21,9 @@ module Trusted
       end
 
       def build
-        config = DEFAULT_CONFIG.merge(config)
+        configuration = DEFAULT_CONFIG.merge(config)
+
+        Config.new(configuration)
       end
     end
   end
