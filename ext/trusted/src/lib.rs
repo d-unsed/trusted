@@ -4,6 +4,7 @@
 extern crate hyper;
 extern crate hyperlocal;
 
+mod config;
 mod handler;
 mod request;
 mod request_processor;
