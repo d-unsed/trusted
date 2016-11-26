@@ -11,9 +11,6 @@ module Rack
         ::Trusted::Server.new(config).listen do |request, response|
           puts "REQUEST: [#{request.method}] #{request.uri}"
           puts "PATH_INFO: #{request.path_info}"
-          puts "QUERY_STRING: #{request.query_string}"
-          puts "REMOTE_ADDR: #{request.remote_addr.inspect}"
-          puts "SERVER_PORT: #{request.server_port.inspect}"
           puts "REQUEST HEADERS: #{request.headers.inspect}"
 
           rack_input = StringIO::new(request.body)
@@ -30,7 +27,7 @@ module Rack
             'rack.version' => Rack::VERSION,
             'rack.input' => rack_input,
             'rack.errors' => $stderr,
-            'rack.multithread' => false,
+            'rack.multithread' => true,
             'rack.multiprocess' => false,
             'rack.run_once' => false,
             'rack.url_scheme' => 'http',
@@ -49,6 +46,8 @@ module Rack
           body.each { |b| response.body.concat(b) }
 
           body.close if body.respond_to?(:close)
+
+          response
         end
       end
     end

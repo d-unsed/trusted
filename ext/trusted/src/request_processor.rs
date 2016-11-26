@@ -1,28 +1,24 @@
-use ruru::{Object, Proc};
-
 use request::Request;
-use response::Response;
 use ruby::{Request as RubyRequest, Response as RubyResponse};
+use ruby::request::{Observer, ProcessingPool};
 
 pub struct RequestProcessor<'a> {
     request: Request,
-    ruby_handler: &'a Proc,
+    processing_pool: &'a ProcessingPool,
 }
 
 impl<'a> RequestProcessor<'a> {
-    pub fn new(request: Request, ruby_handler: &'a Proc) -> Self {
+    pub fn new(request: Request, processing_pool: &'a ProcessingPool) -> Self {
         RequestProcessor {
             request: request,
-            ruby_handler: ruby_handler,
+            processing_pool: processing_pool,
         }
     }
 
-    pub fn handle(self) -> Response {
+    pub fn handle(self, observer: Observer) {
         let ruby_request = RubyRequest::from(self.request);
         let ruby_response = RubyResponse::new();
 
-        self.ruby_handler.call(vec![ruby_request.to_any_object(), ruby_response.to_any_object()]);
-
-        ruby_response.into()
+        self.processing_pool.process(ruby_request, ruby_response, observer);
     }
 }

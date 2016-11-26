@@ -6,7 +6,7 @@ use request::{REQUEST_DATA_TYPE, Request as RustRequest};
 
 lazy_static! {
     static ref REQUEST_CLASS: Class = {
-        Class::from_existing("Trusted").get_nested_class("Request")
+        Class::from_existing("Trusted").get_nested_class("Request").get_nested_class("Request")
     };
 }
 
@@ -62,16 +62,18 @@ methods!(
 
 impl Request {
     pub fn define_ruby_class() {
-        Class::from_existing("Trusted").define_nested_class("Request", None).define(|itself| {
-            itself.def("method", method);
-            itself.def("uri", uri);
-            itself.def("path_info", path_info);
-            itself.def("query_string", query_string);
-            itself.def("remote_addr", remote_addr);
-            itself.def("server_port", server_port);
-            itself.def("headers", headers);
-            itself.def("body", body);
-        });
+        Class::from_existing("Trusted")
+            .get_nested_class("Request")
+            .define_nested_class("Request", None).define(|itself| {
+                itself.def("method", method);
+                itself.def("uri", uri);
+                itself.def("path_info", path_info);
+                itself.def("query_string", query_string);
+                itself.def("remote_addr", remote_addr);
+                itself.def("server_port", server_port);
+                itself.def("headers", headers);
+                itself.def("body", body);
+            });
     }
 }
 

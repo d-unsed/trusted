@@ -10,4 +10,5 @@ crate-type = ["dylib"]
 hyper = "0.9.10"
 hyperlocal = { git = "https://github.com/softprops/hyperlocal.git" }
 lazy_static = "0.2.1"
-ruru = "0.9.0"
+# ruru = "0.9.0"
+ruru = { path = "../../../../rust/ruru" }

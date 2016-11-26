@@ -1,10 +1,10 @@
 use std::error::Error;
 
-use ruru::{Class, NilClass, RString, Object, VM};
+use ruru::{Class, NilClass, Object, VM};
 
+use core::Server as RustServer;
 use config::Config as RustConfig;
 use ruby::Config;
-use server::Server as RustServer;
 
 class!(Server);
 
@@ -25,7 +25,7 @@ methods!(
     fn listen() -> NilClass {
         let handler = VM::block_proc();
 
-        // We can use unsafe here, because the type of addr is checked in the constructor
+        // We can use unsafe here, because the type of @config is checked in the constructor
         let config = unsafe { itself.instance_variable_get("@config").to::<Config>() };
 
         RustServer::new(RustConfig::from(config)).listen(handler);

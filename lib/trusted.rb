@@ -1,8 +1,11 @@
+require 'concurrent'
 require 'docile'
 require 'thermite/fiddle'
 
 require 'trusted/config/builder'
 require 'trusted/config/config'
+
+require 'trusted/request/processing_pool'
 
 require 'trusted/response'
 require 'trusted/version'
@@ -16,6 +19,3 @@ Thermite::Fiddle.load_module(
   ruby_project_path: toplevel_dir,
   cargo_project_path: File.join(toplevel_dir, 'ext', 'trusted')
 )
-
-module Trusted
-end
