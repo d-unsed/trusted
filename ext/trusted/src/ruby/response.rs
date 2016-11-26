@@ -10,6 +10,14 @@ lazy_static! {
 class!(Response);
 
 impl Response {
+    pub fn define_ruby_class() {
+        Class::from_existing("Trusted").define_nested_class("Response", None).define(|itself| {
+            itself.attr_accessor("status");
+            itself.attr_accessor("headers");
+            itself.attr_accessor("body");
+        });
+    }
+
     pub fn new() -> Self {
         let response = (*RESPONSE_CLASS).new_instance(vec![]);
 

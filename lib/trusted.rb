@@ -7,7 +7,6 @@ require 'trusted/config/config'
 
 require 'trusted/request/processing_pool'
 
-require 'trusted/response'
 require 'trusted/version'
 
 require 'rack/handler/trusted'
