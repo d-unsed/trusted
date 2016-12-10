@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Trusted::Config::Builder do
   let(:binding_type) { :tcp }
   let(:address) { '127.0.0.1:8080' }
+  let(:thread_pool_size) { 16 }
   let(:config) { builder.config }
 
   subject(:builder) { described_class.new }
@@ -46,6 +47,14 @@ describe Trusted::Config::Builder do
     end
   end
 
+  describe '#thread_pool_size' do
+    subject { builder.thread_pool_size(thread_pool_size) }
+
+    it 'sets correct pool size' do
+      expect { subject }.to change { config[:thread_pool_size] }.to(thread_pool_size)
+    end
+  end
+
   describe '#build' do
     subject { builder.build }
 
@@ -63,6 +72,7 @@ describe Trusted::Config::Builder do
       before do
         builder.binding_type(binding_type)
         builder.listen_on(address)
+        builder.thread_pool_size(thread_pool_size)
       end
 
       it 'creates a new instance of Config' do
@@ -71,6 +81,7 @@ describe Trusted::Config::Builder do
           .with(
             binding_type: binding_type,
             listen_on: address,
+            thread_pool_size: thread_pool_size,
           )
 
           subject
