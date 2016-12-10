@@ -3,9 +3,9 @@ module Trusted
     class ProcessingPool
       attr_reader :handler, :thread_pool
 
-      def initialize(handler)
+      def initialize(handler, thread_pool_size)
         @handler = handler
-        @thread_pool = Concurrent::FixedThreadPool.new(5)
+        @thread_pool = Concurrent::FixedThreadPool.new(thread_pool_size)
       end
 
       private
