@@ -1,6 +1,6 @@
 [package]
 name = "trusted"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Dmitry Gritsay <dmitry@vinted.com>"]
 
 [lib]
