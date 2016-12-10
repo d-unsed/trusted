@@ -17,9 +17,9 @@ Gem::Specification.new do |spec|
   spec.extensions << 'Rakefile'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ['lib']
+  spec.bindir        = 'bin'
+  spec.executables   = %w(trusted)
+  spec.require_paths = %w(lib)
 
   spec.add_dependency 'concurrent-ruby', '~> 1.0.2'
   spec.add_dependency 'docile', '~> 1.1.0'

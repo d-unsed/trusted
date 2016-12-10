@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'trusted'
+
+app, _ = Rack::Builder.parse_file('config.ru')
+
+Rack::Handler::Trusted.run(app)
