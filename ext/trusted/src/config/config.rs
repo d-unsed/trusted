@@ -1,4 +1,4 @@
-use ruru::{Object, RString, Symbol};
+use ruru::{Fixnum, Object, RString, Symbol};
 
 use ruby::Config as RubyConfig;
 
@@ -7,13 +7,15 @@ use super::BindingType;
 pub struct Config {
     binding_type: BindingType,
     listen_on: String,
+    thread_pool_size: usize,
 }
 
 impl Config {
-    pub fn new(binding_type: BindingType, listen_on: String) -> Self {
+    pub fn new(binding_type: BindingType, listen_on: String, thread_pool_size: usize) -> Self {
         Config {
             binding_type: binding_type,
             listen_on: listen_on,
+            thread_pool_size: thread_pool_size,
         }
     }
 
@@ -25,6 +27,11 @@ impl Config {
     #[inline]
     pub fn listen_on(&self) -> &str {
         &self.listen_on
+    }
+
+    #[inline]
+    pub fn thread_pool_size(&self) -> usize {
+        self.thread_pool_size
     }
 }
 
@@ -47,6 +54,13 @@ impl From<RubyConfig> for Config {
 
         let binding_type = BindingType::from(binding_type.as_str());
 
-        Config::new(binding_type, listen_on)
+        // TODO: raise an exception if it is not a Symbol
+        let thread_pool_size =
+            ruby_config
+                .send("thread_pool_size", vec![])
+                .try_convert_to::<Fixnum>().unwrap()
+                .to_i64() as usize;
+
+        Config::new(binding_type, listen_on, thread_pool_size)
     }
 }

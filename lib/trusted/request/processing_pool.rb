@@ -6,6 +6,8 @@ module Trusted
       def initialize(handler, thread_pool_size)
         @handler = handler
         @thread_pool = Concurrent::FixedThreadPool.new(thread_pool_size)
+
+        puts "[ruby] Spawning #{thread_pool_size} green thread(s)"
       end
 
       private

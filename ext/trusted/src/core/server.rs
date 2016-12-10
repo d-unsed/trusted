@@ -32,20 +32,25 @@ impl Server {
         let mut core = Core::new(response_future_sender,
                                  request_receiver,
                                  ruby_handler,
-                                 core_stream);
+                                 core_stream,
+                                 self.config.thread_pool_size());
 
         thread::spawn(move || {
             let handler_function = || -> () {
                 println!("[hyper] GVL released for server thread");
 
+                let thread_pool_size = self.config.thread_pool_size();
+
+                println!("[hyper] Spawning {} native thread(s)", thread_pool_size);
+
                 match *self.config.binding_type() {
                     BindingType::Unix => {
                         UnixSocketServer::new(self.config.listen_on()).unwrap()
-                            .handle(handler).unwrap();
+                            .handle_threads(handler, thread_pool_size).unwrap();
                     },
                     BindingType::Tcp => {
                         HyperServer::http(self.config.listen_on()).unwrap()
-                            .handle_threads(handler, 50).unwrap();
+                            .handle_threads(handler, thread_pool_size).unwrap();
                     }
                 };
             };
