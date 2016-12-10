@@ -1,8 +1,32 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
+require 'optparse'
+
 require 'trusted'
 
-app, _ = Rack::Builder.parse_file('config.ru')
+options = {}
 
-Rack::Handler::Trusted.run(app)
+opt_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: trusted [options]"
+
+  opts.on("-c path", "--config PATH", "Load configuration file") do |config|
+    contents = File.read(config)
+
+    # TODO: Move to Builder and use cleanroom instead of eval
+    options[:config] = Trusted::Config::Builder.dsl { eval contents }
+  end
+
+  opts.on("-r path", "--rackup PATH", "Load rackup file") do |rackup|
+    options[:rackup] = rackup
+  end
+end
+
+opt_parser.parse!
+
+config = options[:config] || ::Trusted::Config::Builder.new.build
+rackup = options[:rackup] || 'config.ru'
+
+app, _ = Rack::Builder.parse_file(rackup)
+
+Rack::Handler::Trusted.run(app, trusted_config: config)
