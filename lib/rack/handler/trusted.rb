@@ -10,8 +10,6 @@ module Rack
 
         ::Trusted::Server.new(config).listen do |request, response|
           puts "REQUEST: [#{request.method}] #{request.uri}"
-          puts "PATH_INFO: #{request.path_info}"
-          puts "REQUEST HEADERS: #{request.headers.inspect}"
 
           rack_input = StringIO::new(request.body)
 
