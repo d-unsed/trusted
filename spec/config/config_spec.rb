@@ -27,15 +27,27 @@ describe Trusted::Config::Config do
     its(:listen_on) { is_expected.to eq(address) }
   end
 
-  describe '#thread_pool_size' do
+  describe '#rack_thread_pool_size' do
     let(:size) { 16 }
 
     let(:configuration) do
       {
-        thread_pool_size: size,
+        rack_thread_pool_size: size,
       }
     end
 
-    its(:thread_pool_size) { is_expected.to eq(size) }
+    its(:rack_thread_pool_size) { is_expected.to eq(size) }
+  end
+
+  describe '#native_thread_pool_size' do
+    let(:size) { 4 }
+
+    let(:configuration) do
+      {
+        native_thread_pool_size: size,
+      }
+    end
+
+    its(:native_thread_pool_size) { is_expected.to eq(size) }
   end
 end

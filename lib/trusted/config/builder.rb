@@ -6,7 +6,8 @@ module Trusted
       DEFAULT_CONFIG = {
         binding_type: :tcp,
         listen_on: 'localhost:3000',
-        thread_pool_size: 1,
+        rack_thread_pool_size: 1,
+        native_thread_pool_size: 1,
       }.freeze
 
       def self.dsl(&block)
@@ -25,8 +26,12 @@ module Trusted
         config[:listen_on] = address
       end
 
-      def thread_pool_size(size)
-        config[:thread_pool_size] = size
+      def rack_thread_pool_size(size)
+        config[:rack_thread_pool_size] = size
+      end
+
+      def native_thread_pool_size(size)
+        config[:native_thread_pool_size] = size
       end
 
       def build

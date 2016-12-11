@@ -33,14 +33,14 @@ impl Server {
                                  request_receiver,
                                  ruby_handler,
                                  core_stream,
-                                 self.config.thread_pool_size());
+                                 self.config.rack_thread_pool_size());
 
         thread::spawn(move || {
             let handler_function = || -> () {
                 println!("[hyper] GVL released for server thread");
 
                 let address = self.config.listen_on();
-                let thread_pool_size = self.config.thread_pool_size();
+                let thread_pool_size = self.config.native_thread_pool_size();
 
                 println!("[hyper] Spawning {} native thread(s)", thread_pool_size);
                 println!("[hyper] Listening on {}", address);
