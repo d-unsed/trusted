@@ -39,17 +39,19 @@ impl Server {
             let handler_function = || -> () {
                 println!("[hyper] GVL released for server thread");
 
+                let address = self.config.listen_on();
                 let thread_pool_size = self.config.thread_pool_size();
 
                 println!("[hyper] Spawning {} native thread(s)", thread_pool_size);
+                println!("[hyper] Listening on {}", address);
 
                 match *self.config.binding_type() {
                     BindingType::Unix => {
-                        UnixSocketServer::new(self.config.listen_on()).unwrap()
+                        UnixSocketServer::new(address).unwrap()
                             .handle_threads(handler, thread_pool_size).unwrap();
                     },
                     BindingType::Tcp => {
-                        HyperServer::http(self.config.listen_on()).unwrap()
+                        HyperServer::http(address).unwrap()
                             .handle_threads(handler, thread_pool_size).unwrap();
                     }
                 };
