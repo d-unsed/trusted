@@ -4,7 +4,7 @@ use std::thread;
 
 use hyper::server::Server as HyperServer;
 use hyperlocal::UnixSocketServer;
-use ruru::{Proc, VM};
+use ruru::{Proc, Thread};
 
 use config::{BindingType, Config};
 use core::{Core, Handler, ResponseFuture};
@@ -61,7 +61,7 @@ impl Server {
                 ()
             };
 
-            VM::thread_call_without_gvl(
+            Thread::call_without_gvl(
                 handler_function,
                 Some(unblock_function)
             );
