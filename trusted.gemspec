@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dmitry Gritsay']
   spec.email         = ['unseductable@gmail.com']
 
-  spec.summary       = %q{Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
-  spec.homepage      = "http://this-week-in-ruru.org/"
+  spec.summary       = %q{Rack-compatible application server}
+  spec.description   = %q{Application server for Rack apps built with Rust}
+  spec.homepage      = 'https://github.com/d-unseductable/trusted'
   spec.license       = 'MIT'
 
   spec.extensions << 'Rakefile'
