@@ -31,6 +31,10 @@ Application can be found
 
 ## Installation
 
+Trusted requires a [Rust compiler](https://www.rust-lang.org/) to be installed. This should
+be solved in the future by using precompiled native extensions with
+[Thermite](https://github.com/malept/thermite).
+
 Add this line to your application's Gemfile:
 
 ```ruby
