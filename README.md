@@ -8,27 +8,6 @@ Rack-compatible application server. Built with
  - [Hyper](https://github.com/hyperium/hyper)
  - [concurrent-ruby](https://github.com/ruby-concurrency/concurrent-ruby)
 
-## Benchmarks
-
-Application can be found
-[here](https://github.com/d-unseductable/trusted_benchmark).
-
-### Single-threaded mode
-
-| server        | req/sec  |
-| ------------- |:--------:|
-| Unicorn       | 76.76    |
-| Puma          | 85.50    |
-| Passenger     | 85.38    |
-| Trusted       | 90.83    |
-
-### Multi-threaded mode
-
-| server        | req/sec  |
-| ------------- |:--------:|
-| Puma          | 61.64    |
-| Trusted       | 62.57    |
-
 ## Installation
 
 Trusted requires a [Rust compiler](https://www.rust-lang.org/) to be installed. This should
