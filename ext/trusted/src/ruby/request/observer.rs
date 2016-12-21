@@ -28,8 +28,8 @@ unsafe_methods!(
     // This method is called when the `Future` finishes its execution
     // (when request is processed by Rack stack)
     //
-    // Extract `Sender` which points to the corresponding Hyper handler and
-    // send response to it
+    // Extracts `Sender` which points to the corresponding Hyper handler and
+    // sends response to it
     fn update(_time: AnyObject, response: Response, _reason: AnyObject) -> NilClass {
         let data = itself.get_data(&*OBSERVER_DATA_TYPE);
 
