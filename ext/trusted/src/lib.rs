@@ -15,7 +15,7 @@ use ruby::{Request, Response, Server};
 use ruby::request::Observer;
 
 #[no_mangle]
-pub extern fn initialize_my_app() {
+pub extern fn initialize_trusted_extension() {
     Observer::define_ruby_class();
     Request::define_ruby_class();
     Response::define_ruby_class();
