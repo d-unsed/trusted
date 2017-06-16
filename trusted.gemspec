@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'concurrent-ruby', '~> 1.0'
   spec.add_dependency 'docile', '~> 1.1'
   spec.add_dependency 'rack', '>= 1.0', '< 3.0'
-  spec.add_dependency 'thermite', '~> 0.7.0'
+  spec.add_dependency 'thermite', '~> 0.12.1'
 
   spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'rake', '~> 10.0'
