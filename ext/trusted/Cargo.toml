@@ -8,6 +8,6 @@ crate-type = ["dylib"]
 
 [dependencies]
 hyper = "0.9.10"
-hyperlocal = { git = "https://github.com/softprops/hyperlocal.git" }
+hyperlocal = { git = "https://github.com/softprops/hyperlocal.git", rev = "d966aa6505c61b1b0f582a35c535ead857eba3ee" }
 lazy_static = "0.2.1"
 ruru = "0.9.3"
